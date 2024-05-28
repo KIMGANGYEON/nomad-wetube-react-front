@@ -1,7 +1,7 @@
 import React from "react";
 
 function Editvideo() {
-  return <div>Edit</div>;
+  return <div>Edddit</div>;
 }
 
 export default Editvideo;
