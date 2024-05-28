@@ -1,25 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Outlet, Route, Routes } from "react-router-dom";
+import Navbar from "./routes/layout/Navbar";
+import Footer from "./routes/layout/Footer";
+import HomePage from "./routes/pages/HomePage";
+import Videos from "./routes/pages/VideosPage";
+import Editvideo from "./routes/pages/VideosPage/Editvideo";
+
+function Layout() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "95vh",
+        alignItems: "center",
+      }}
+    >
+      <Navbar />
+      <main style={{ marginBottom: "auto" }}>
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+
+        <Route path="/videos/:id" element={<Videos />} />
+        <Route path="/videos/:id/edit" element={<Editvideo />} />
+      </Route>
+    </Routes>
   );
 }
 
