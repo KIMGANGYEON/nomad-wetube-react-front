@@ -55,8 +55,8 @@ function Videos() {
         <h2>
           {video?.views} {video?.views === 1 ? "view" : "views"}
         </h2>
-        <Link to={`http://localhost:4000/videos/${id}/edit`}>
-          <span>Edit video</span>
+        <Link to="edit">
+          <span>Edit video &rarr;</span>
         </Link>
       </div>
     </>
