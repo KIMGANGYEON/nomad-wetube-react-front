@@ -4,6 +4,7 @@ import Footer from "./routes/layout/Footer";
 import HomePage from "./routes/pages/HomePage";
 import Videos from "./routes/pages/VideosPage";
 import Editvideo from "./routes/pages/VideosPage/Editvideo";
+import UploadPage from "./routes/pages/UploadPage";
 
 function Layout() {
   return (
@@ -33,6 +34,7 @@ function App() {
 
         <Route path="/videos/:id" element={<Videos />} />
         <Route path="/videos/:id/edit" element={<Editvideo />} />
+        <Route path="/videos/upload" element={<UploadPage />} />
       </Route>
     </Routes>
   );

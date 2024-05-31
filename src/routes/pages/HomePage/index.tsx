@@ -39,19 +39,7 @@ function HomePage() {
 
   return (
     <>
-      {videos.map((video, inedex) => (
-        <div key={video.id}>
-          <Link to={`/videos/${video.id}`}>
-            <h1>{video.title}</h1>
-          </Link>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <li>{video.rating}/5</li>
-            <li>{video.comments} comments.</li>
-            <li>Posted {video.createdAt}</li>
-            <li>{video.views} views.</li>
-          </ul>
-        </div>
-      ))}
+      <h1>{data?.title}</h1>
     </>
   );
 }
