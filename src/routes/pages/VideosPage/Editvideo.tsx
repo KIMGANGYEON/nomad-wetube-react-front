@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 interface Video {
   title: string;
   views: number;
+  description: string;
+  hashtags: [];
 }
 
 interface Data {
@@ -15,14 +17,21 @@ function Editvideo() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [hashtags, setHashtags] = useState<string[]>([]);
   const [data, setData] = useState<Data | null>(null);
   const [video, setVideo] = useState<Video | undefined>();
   const [span, setSpan] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
-
+  const handleChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(e.target.value);
+  };
+  const handleChange3 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHashtags(e.target.value.split(",").map((tag) => tag.trim()));
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (title == "") {
@@ -34,7 +43,7 @@ function Editvideo() {
     try {
       const response = await axios.post(
         `http://localhost:4000/videos/${id}/edit`,
-        { title }
+        { title, description, hashtags }
       );
 
       if (response.status === 200) {
@@ -56,6 +65,8 @@ function Editvideo() {
         setData(response.data);
         setVideo(response.data.video);
         setTitle(response.data.video.title);
+        setDescription(response.data.video.description);
+        setHashtags(response.data.video.hashtags);
       } catch (error) {
         console.error(error);
       }
@@ -63,19 +74,42 @@ function Editvideo() {
     fetchData();
   }, [id]);
   return (
-    <div>
-      <h1>{data?.title}</h1>
-      <h4>Change Title of video</h4>
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder={`Edit ${video?.title}`}
-          value={title}
-          onChange={handleChange}
-        />
-        <input type="submit" value="Save" />
-      </form>
-      {span ? <span style={{ color: "red" }}>write the title</span> : null}
-    </div>
+    <>
+      {video ? (
+        <div>
+          <h1>Update Video</h1>
+          <h2>{video?.title}</h2>
+          <h4>Change Title of video</h4>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
+            <input
+              placeholder={`Edit ${video?.title}`}
+              value={title}
+              onChange={handleChange1}
+              required
+            />
+            <input
+              placeholder={`Edit ${video?.description}`}
+              value={description}
+              onChange={handleChange2}
+              required
+            />
+            <input
+              placeholder={`Edit ${video?.hashtags}`}
+              value={hashtags}
+              onChange={handleChange3}
+              required
+            />
+            <input type="submit" value="Save" />
+          </form>
+          {span ? <span style={{ color: "red" }}>write the title</span> : null}
+        </div>
+      ) : (
+        <h1>Video Not Found.</h1>
+      )}
+    </>
   );
 }
 

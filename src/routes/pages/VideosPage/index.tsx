@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 interface Video {
   title: string;
   views: number;
+  createdAt: string;
 }
 
 interface Data {
@@ -19,9 +20,10 @@ function Videos() {
   const navigate = useNavigate();
   const [data, setData] = useState<Data | null>(null);
   const [video, setVideo] = useState<Video | undefined>();
+  const [route, setRoute] = useState(true);
 
   useEffect(() => {
-    if (id === undefined || !/^\d+$/.test(id)) {
+    if (id === undefined || !/^[0-9a-f]{24}$/.test(id)) {
       navigate("/");
     }
   }, [id, navigate]);
@@ -32,8 +34,13 @@ function Videos() {
         const response = await axios.get<Data>(
           `http://localhost:4000/videos/${id}`
         );
+        console.log(response.data);
         setData(response.data);
         setVideo(response.data.video);
+        if (response.status === 500) {
+          setRoute(false);
+          console.log("hello");
+        }
       } catch (error) {
         console.error(error);
       }
@@ -41,7 +48,7 @@ function Videos() {
     fetchData();
   }, [id]);
 
-  if (id === undefined || !/^\d+$/.test(id)) {
+  if (id === undefined || !/^[0-9a-f]{24}$/.test(id)) {
     return null;
   }
 
@@ -50,15 +57,21 @@ function Videos() {
       <Helmet>
         <title>{video?.title}</title>
       </Helmet>
-      <div>
-        <h1>{video?.title}</h1>
-        <h2>
-          {video?.views} {video?.views === 1 ? "view" : "views"}
-        </h2>
-        <Link to="edit">
-          <span>Edit video &rarr;</span>
-        </Link>
-      </div>
+      {video ? (
+        <div>
+          <h1>{video?.title}</h1>
+          <span style={{ display: "block" }}>{video?.createdAt}</span>
+          <Link to="edit">
+            <span>Edit video &rarr;</span>
+          </Link>
+          <hr />
+          <Link to="delete">
+            <span>Delete video &rarr;</span>
+          </Link>
+        </div>
+      ) : (
+        <h1>Video Not Found.</h1>
+      )}
     </>
   );
 }

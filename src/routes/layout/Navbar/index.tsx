@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 function navbar() {
   return (
     <>
-      <Link to="/videos/upload">upload video</Link>
+      <div style={{ display: "flex", gap: "10px" }}>
+        <Link to="/videos/upload">upload video</Link>
+        <Link to="/">home</Link>
+      </div>
     </>
   );
 }

@@ -10,11 +10,13 @@ function HomePage() {
 
   interface Videos {
     title: string;
-    id: number;
+    _id: number;
     rating: number;
     comments: number;
     createdAt: string;
+    description: string;
     views: number;
+    hashtags: any;
   }
 
   const [data, setData] = useState<Data | null>(null);
@@ -33,13 +35,33 @@ function HomePage() {
 
   useEffect(() => {
     if (data) {
-      setVideos(data.videos);
+      setVideos(data?.videos);
     }
   }, [data]);
-
   return (
     <>
       <h1>{data?.title}</h1>
+      {videos.length ? (
+        <div>
+          {videos?.map((video) => (
+            <div key={video._id}>
+              <Link to={`/videos/${video._id}`}>
+                <h3>{video.title}</h3>
+              </Link>
+              <p>{video.description}</p>
+              <ul>
+                {video.hashtags.map((hash: any, index: number) => (
+                  <li key={index}>{hash}</li>
+                ))}
+              </ul>
+              <span>{video.createdAt}</span>
+              <hr />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <h2>No Video</h2>
+      )}
     </>
   );
 }
