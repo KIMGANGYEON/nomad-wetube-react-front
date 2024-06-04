@@ -8,6 +8,7 @@ import UploadPage from "./routes/pages/UploadPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Delete from "./routes/pages/DeletePage/Delete";
+import SearchPage from "./routes/pages/SearchPage/SearchPage";
 
 function Layout() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/videos/:id/edit" element={<Editvideo />} />
         <Route path="/videos/:id/delete" element={<Delete />} />
         <Route path="/videos/upload" element={<UploadPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Route>
     </Routes>
   );
