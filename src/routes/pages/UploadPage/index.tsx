@@ -19,6 +19,10 @@ function UploadPage() {
   const [errors, setErrors] = useState<any>("");
   const { isLoading, data } = useQuery<Data>("uploadPage", backserver);
 
+  useEffect(() => {
+    localStorage.removeItem("searchKey");
+  }, []);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

@@ -28,6 +28,10 @@ function Videos() {
     }
   }, [id, navigate]);
 
+  // useEffect(() => {
+  //   localStorage.removeItem("searchKey");
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {

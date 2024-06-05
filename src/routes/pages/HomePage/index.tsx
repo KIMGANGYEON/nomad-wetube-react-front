@@ -38,6 +38,10 @@ function HomePage() {
       setVideos(data?.videos);
     }
   }, [data]);
+
+  useEffect(() => {
+    localStorage.removeItem("searchKey");
+  }, []);
   return (
     <>
       <h1>{data?.title}</h1>

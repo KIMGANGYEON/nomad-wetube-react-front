@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { searchServer } from "../../../api";
 import { onChange } from "react-toastify/dist/core/store";
@@ -7,28 +7,46 @@ import { useNavigate } from "react-router-dom";
 
 interface Data {
   title: string;
+  videos: Video[];
+}
+
+interface Video {
+  title: string;
+  _id: string;
+  createdAt: string;
+  hashtags: string[];
 }
 
 function SearchPage() {
-  const { isLoading, data } = useQuery<Data>("searchPage", () =>
+  const [searchTitle, setSearchTitle] = useState(() => {
+    return localStorage.getItem("searchKey") || "";
+  });
+  const { isLoading, data, refetch } = useQuery<Data>("searchPage", () =>
     searchServer(searchTitle)
   );
-  const [searchTitle, setSearchTitle] = useState("d");
+
+  useEffect(() => {
+    const searchKey = localStorage.getItem("searchKey") || "";
+    setSearchTitle(searchKey);
+    if (searchKey) {
+      const newUrl = `/search?keyword=${searchKey}`;
+      window.history.pushState({ path: newUrl }, "", newUrl);
+      refetch();
+    }
+  }, []);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTitle(e.target.value);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(searchTitle);
+    localStorage.setItem("searchKey", searchTitle);
     const newUrl = `/search?keyword=${searchTitle}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
-    // try {
-    //   const response = await axios.post(`http://localhost:4000/search`, {
-    //     searchTitle,
-    //   });
-    // } catch (error) {}
+    refetch();
   };
+
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>{data?.title}</h1>
@@ -41,6 +59,21 @@ function SearchPage() {
         />
         <input type="submit" value="Search now" />
       </form>
+      <div>
+        <div>
+          {data?.videos.map((video) => (
+            <div key={video._id}>
+              <h1>{video.title}</h1>
+              <ul>
+                {video.hashtags.map((hash, index) => (
+                  <li key={index}>{hash}</li>
+                ))}
+              </ul>
+              <span>{video.createdAt}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

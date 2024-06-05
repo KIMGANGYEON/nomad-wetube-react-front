@@ -9,7 +9,7 @@ export async function backserver() {
 
 export async function searchServer(searchTitle: string) {
   const response = await axios.get(`${baseUrl}/search`, {
-    params: { searchTitle: searchTitle },
+    params: { keyword: searchTitle },
   });
   return response.data;
 }
