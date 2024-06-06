@@ -13,3 +13,13 @@ export async function searchServer(searchTitle: string) {
   });
   return response.data;
 }
+
+export async function joinServer() {
+  const response = await axios.get(`${baseUrl}/join`);
+  return response.data;
+}
+
+export async function loginServer() {
+  const response = await axios.get(`${baseUrl}/login`);
+  return response.data;
+}

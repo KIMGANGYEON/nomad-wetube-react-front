@@ -5,9 +5,10 @@ function navbar() {
   return (
     <>
       <div style={{ display: "flex", gap: "10px" }}>
-        <Link to="/videos/upload">upload video</Link>
         <Link to="/">home</Link>
+        <Link to="/videos/upload">upload video</Link>
         <Link to="/search">search</Link>
+        <Link to="/join">join</Link>
       </div>
     </>
   );
